@@ -1,0 +1,50 @@
+- instalar laravel usando composer.
+- criar um banco de dados vazio chamado laravel_example;
+- criar um controller usando o comando abaixo:
+
+php artisan make:controller <nome controller> -r
+( opcao -r -> criação de métodos de recurso no controller)
+php artisan make:controller HomeController -r  
+
+- Ajustar roteamento para web.php -> Route::get('/', 'HomeController@index');
+
+php artisan route:list   // ver rotas atuais . Irá mostrar a rota acima 
+
+- Inserir     Route::resource('/', 'HomeController');  para definição de rotas
+automáticas para um CRUD. 
+- Executar novamente o comando para listar as rotas. 
+
+- Criar model: 
+
+php artisan make:model CustomersModel
+
+Dentro do model criar um vetor $fillable para determinar quais campos são editaveis.
+
+- executar php artisan make:migration create_customer_table para criar uma migracao baseada nos campos do $fillable da tabela a ser criada chamada customers
+
+2020_05_05_194016_create_customer_table . entrar nesse arquivo e editar para criar a migraçao no banco de dados laravel_example.
+Adicionar modificadores: colunas novas->
+$table->string('name');
+            $table->string('email');
+            $table->string('passwd');
+
+Depois executar o comando  php artisan migrate
+A tabela customers irá ser criada com outras tabelas requisitadas pelo Laravel. 
+
+Devemos criar o model Orders para criar a tabela Orders. então 
+php artisan make:model OrdersModel
+
+Criar agora a migração para criar tabela: 
+php artisan make:migration create_order_table
+
+$table->foreign('customer_id')->references('id')->on('customer');
+
+OBS: é importante colocar         Schema::dropIfExists('order');
+ antes de Schema::create.
+
+Banco de dados criado. 
+
+Programação normal, seguindo laravel.com
+
+
+Banco de dados existentes: https://github.com/Xethron/migrations-generator
